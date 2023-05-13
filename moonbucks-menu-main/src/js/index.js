@@ -10,19 +10,33 @@
 const $ = (selector) => document.querySelector(selector);
 
 function App() {
-    // form 태그가 자동으로 전송(submit)되는 걸 막아준다.
-   $("#espresso-menu-form").addEventListener("submit", (e) => {
+    // TODO 메뉴 수정
+    // - [x] 메뉴 수정 버튼 클릭 이벤트를 받고, 메뉴 수정 모달창이 뜬다.
+    // - [x] 모달창에서 신규메뉴명을 입력 받고, 확인버튼을 누르면 메뉴가 수정된다.
+
+    $("#espresso-menu-list").addEventListener("click", (e) => {
+        if (e.target.classList.contains("menu-edit-button")) {
+            const $menuName =  e.target.closest("li").querySelector((".menu-name"));
+            const modifiedMenuName = prompt(
+                "메뉴명을 수정하세요.",
+                $menuName.innerText
+            );
+            $menuName.innerText = modifiedMenuName;
+        }
+    });
+
+    $("#espresso-menu-form").addEventListener("submit", (e) => {
         e.preventDefault();
     });
 
-   const addMenuName = () => {
-       if ($("#espresso-menu-name").value === "") {
-           alert("값을 입력해주세요.");
-           return;
-       }
-       const espressoMenuName = $("#espresso-menu-name").value;
-       const menuItemTemplate = (espressoMenuName) => {
-           return `
+    const addMenuName = () => {
+        if ($("#espresso-menu-name").value === "") {
+            alert("값을 입력해주세요.");
+            return;
+        }
+        const espressoMenuName = $("#espresso-menu-name").value;
+        const menuItemTemplate = (espressoMenuName) => {
+            return `
                <li class="menu-list-item d-flex items-center py-2">
                    <span class="w-100 pl-2 menu-name">${espressoMenuName}</span>
                    <button
@@ -38,28 +52,28 @@ function App() {
                        삭제
                    </button>
                </li>`;
-       };
-       $("#espresso-menu-list").insertAdjacentHTML(
-           "beforeend",
-           menuItemTemplate(espressoMenuName)
-       );
-       const menuCount = $("#espresso-menu-list").querySelectorAll("li").length;
-       $(".menu-count").innerText = `총 ${menuCount}개`;
-       $("#espresso-menu-name").value = '';
-   }
+        };
+        $("#espresso-menu-list").insertAdjacentHTML(
+            "beforeend",
+            menuItemTemplate(espressoMenuName)
+        );
+        const menuCount = $("#espresso-menu-list").querySelectorAll("li").length;
+        $(".menu-count").innerText = `총 ${menuCount}개`;
+        $("#espresso-menu-name").value = '';
+    }
 
-   // 확인 버튼 클릭으로 메뉴 추가
-   $("#espresso-menu-submit-button").addEventListener("click", () => {
-       addMenuName();
-   });
+    // 확인 버튼 클릭으로 메뉴 추가
+    $("#espresso-menu-submit-button").addEventListener("click", () => {
+        addMenuName();
+    });
 
-   // 엔터키로 메뉴 추가
-   $("#espresso-menu-name").addEventListener("keypress", (e) => {
-       if (e.key !== "Enter") {
-           return;
-       }
-       addMenuName();
-   });
+    // 엔터키로 메뉴 추가
+    $("#espresso-menu-name").addEventListener("keypress", (e) => {
+        if (e.key !== "Enter") {
+            return;
+        }
+        addMenuName();
+    });
 }
 
 App();
@@ -70,9 +84,6 @@ App();
 
 
 
-// TODO 메뉴 수정
-// - [ ] 메뉴 수정 버튼 클릭 이벤트를 받고, 메뉴 수정 모달창이 뜬다.
-// - [ ] 모달창에서 신규메뉴명을 입력 받고, 확인버튼을 누르면 메뉴가 수정된다.
 
 // TODO 메뉴 삭제
 // - [ ] 메뉴 삭제 버튼 클릭 이벤트를 받고, 메뉴 삭제 컨펌 모달창이 뜬다.
